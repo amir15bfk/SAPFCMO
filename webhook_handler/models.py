@@ -39,7 +39,14 @@ class Machine(models.Model):
     location = models.CharField(max_length=100)
     status = models.CharField(max_length=50)
     webhook_url = models.URLField(unique=True)  # New field for machine-specific webhook
-
+    
+    @property
+    def latest_data(self):
+        return self.sensor_data.order_by('-timestamp').first()
+    @property
+    def all_data(self):
+        return self.sensor_data.order_by('timestamp')
+    
     def __str__(self):
         return f"{self.machine_type} - {self.machine_id}"
 
