@@ -1,2 +1,121 @@
 {% extends 'templates/websiteview.html' %}
 {% load static %}
+{% block title %}
+Home
+
+{% endblock title %}
+{% block user_name%}
+{{user.username}}
+{% endblock user_name%}
+
+{% block content %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Home</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+
+    <dev class="container-fluid">
+
+        <div class="container-fluid">
+            {% for machine in machines%}
+            <div class="row">
+                <div class="col-12">
+                
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{machine.machine_id}}</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                            
+                            <!--temperatur-->
+                            <div class="col-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Area Chart</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart">
+                                        <canvas id="{{ machine.machine_id }}temperature" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            </div>
+
+                            <!--energi-->
+                            <div class="col-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Area Chart</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart">
+                                        <canvas id="{{ machine.machine_id }}energi" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </dev>
+
+
+</section>
+
+
+{% endblock content %}
+
+{% block style %}
+{% load static %}
+
+<!-- Google Font: Source Sans Pro -->
+
+
+{% endblock style %}
+
+{% block script %}
+<!-- jQuery -->
+
+{% endblock script %}
+
+
