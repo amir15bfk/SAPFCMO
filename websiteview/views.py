@@ -3,13 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
-class CustomLoginView(LoginView):
-    template_name = 'login.html'
-    
-    def get_success_url(self):
-        print("sucses")
-        #return reverse('index')
+from webhook_handler.models import Machine
 
 
 from django.contrib.auth import login
@@ -45,4 +39,12 @@ def loginpage(request):
 
 @login_required
 def index(request):
-    return render(request, 'index.html')  # Path to your index template
+    machines=Machine.objects.all()
+    
+
+
+    context = {
+        'user': request.user,
+        'machines':machines
+    }
+    return render(request, 'index.html',context)  # Path to your index template
