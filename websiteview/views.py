@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from webhook_handler.models import Machine
 
-
+from django.contrib.auth import logout
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
@@ -40,11 +40,21 @@ def loginpage(request):
 @login_required
 def index(request):
     machines=Machine.objects.all()
-    
+    user_groups = request.user.groups.values_list('name', flat=True)
+    print(user_groups)
+
 
 
     context = {
         'user': request.user,
-        'machines':machines
+        'machines':machines,
+        'user_groups':user_groups
     }
-    return render(request, 'index.html',context)  # Path to your index template
+    return render(request, 'index.html',context)  # Path to your index template*
+
+@login_required
+def logoutpage(request):
+    logout(request)
+    return redirect('login')
+
+
