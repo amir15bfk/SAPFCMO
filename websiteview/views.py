@@ -14,7 +14,6 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
 def loginpage(request):
-    print('chakib')
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
