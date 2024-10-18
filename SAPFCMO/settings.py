@@ -40,11 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'webhook_handler',
-<<<<<<< HEAD
-    
-=======
-    'websiteview'
->>>>>>> 0a4d1eea5613f2a1e777564433645f15cf0ce4f9
+    'websiteview',
 ]
 CHANNEL_LAYERS = {
     'default': {

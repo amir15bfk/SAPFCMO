@@ -18,12 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('webhook/', include('webhook_handler.urls')),
-<<<<<<< HEAD
-] + static(settings.STATIC_URL, document_root=settings.STATIC_URL)
-=======
     path('', include('websiteview.urls')),
-]
->>>>>>> 0a4d1eea5613f2a1e777564433645f15cf0ce4f9
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_URL)
