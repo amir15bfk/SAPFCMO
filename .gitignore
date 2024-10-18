@@ -1,0 +1,16 @@
+*/__pychache__/*
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+*.egg
+*.egg-info/
+*.egg-info/PKG-INFO
+*.egg-info/SOURCES.txt
+*.egg-info/dependency_links.txt
+*.egg-info/entry_points.txt
+*.egg-info/requires.txt
+*.egg-info/top_level.txt
+*.egg-info/manifest.in
+db.sqlite3
