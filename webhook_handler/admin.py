@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import MachineData
+from .models import Machine,SensorData, LatestSensorData
 
 
-admin.site.register(MachineData)
+admin.site.register(Machine)
+admin.site.register(SensorData)
+admin.site.register(LatestSensorData)

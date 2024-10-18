@@ -13,4 +13,3 @@ __pycache__/
 *.egg-info/requires.txt
 *.egg-info/top_level.txt
 *.egg-info/manifest.in
-db.sqlite3
