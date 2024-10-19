@@ -23,6 +23,8 @@
 #         return f'{self.machine_id} - {self.timestamp}'
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import User
+
 class Machine(models.Model):
     MACHINE_TYPES = (
         ('WELDING', 'Welding Robot'),
@@ -38,11 +40,13 @@ class Machine(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     status = models.CharField(max_length=50)
-    webhook_url = models.URLField(unique=True)  # New field for machine-specific webhook
-    
+    webhook_url = models.URLField()
     @property
     def latest_data(self):
         return self.sensor_data.order_by('-timestamp').first()
+    @property
+    def latest_20_data(self):
+        return self.sensor_data.order_by('-timestamp')[:20]
     @property
     def all_data(self):
         return self.sensor_data.order_by('timestamp')
@@ -70,6 +74,26 @@ class LatestSensorData(models.Model):
 
     def __str__(self):
         return f"Latest data for {self.machine}"
+    
+
+class MaintenanceAgent(models.Model):
+    # Define the possible states for the agent
+    AGENT_STATES = [
+        ('working', 'Working'),
+        ('free', 'Free'),
+        ('not_at_work', 'Not at Work'),
+    ]
+
+    # Fields for the MaintenanceAgent
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Agent's name
+    state = models.CharField(max_length=12, choices=AGENT_STATES, default='free')  # State of the agent
+    assigned_tasks = models.ManyToManyField('Task', related_name='agents', blank=True)  # List of tasks assigned
+
+    # Optional fields (e.g., shift, contact, etc.)
+    contact = models.CharField(max_length=15, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
     
 
 class Task(models.Model):
@@ -109,4 +133,3 @@ class MaintenanceProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - Maintenance Profile'
-

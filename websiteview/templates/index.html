@@ -13,7 +13,7 @@ Home
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Home</h1>
+                <h1>Home Dashboard</h1>
             </div>
         </div>
     </div>
@@ -21,16 +21,78 @@ Home
 
 <section class="content">
 
-    <dev class="container-fluid">
-
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Donut Chart Card -->
+            <div class="col-md-6">
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Energy Monitoring in real-time</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 396px;" width="396" height="250" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Alerts Card -->
+            <div class="col-md-6">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-exclamation-triangle"></i> Alerts
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                            Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire soul.
+                        </div>
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-info"></i> Alert!</h5>
+                            Info alert preview. This alert is dismissable.
+                        </div>
+                        <div class="alert alert-warning alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+                            Warning alert preview. This alert is dismissable.
+                        </div>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-check"></i> Alert!</h5>
+                            Success alert preview. This alert is dismissable.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container-fluid">
             {% for machine in machines%}
             <div class="row">
                 <div class="col-12">
+                    
                 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{machine.machine_id}}</h3>
+                            <h3 class="card-title">{{machine.machine_id}} </h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
@@ -40,14 +102,27 @@ Home
                                 </button>
                             </div>
                         </div>
+                        
                         <div class="card-body">
+                            <div class="col-6">
+                            <table id="machineDataTable_{{machine.machine_id}}" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated here dynamically -->
+                                </tbody>
+                            </table></div>
                             <div class="row">
                             
                             <!--temperatur-->
                             <div class="col-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Area Chart</h3>
+                                    <h3 class="card-title">temperatur</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
@@ -70,7 +145,7 @@ Home
                             <div class="col-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Area Chart</h3>
+                                    <h3 class="card-title">energy</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
@@ -115,6 +190,102 @@ Home
 
 {% block script %}
 <script>
+
+
+
+
+function fetchMachineDataAndPlot() {
+    $.ajax({
+        url: 'webhook/chart_data/', // Update this URL with the actual endpoint
+        method: 'GET',
+        success: function(response) {
+            // Extract data from the response
+            const machineLabels = response.map(machine => 'Machine ' + machine.machine_id);
+            const powerConsumptionData = response.map(machine => machine.power_consumption);
+
+            // Update the chart data with the new labels and data
+            donutChart.data.labels = machineLabels;
+            donutChart.data.datasets[0].data = powerConsumptionData;
+
+            // Re-render the chart with updated data
+            donutChart.update();
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to fetch data:', error);
+        }
+    });
+}
+
+// Create the Donut chart with initial empty data
+var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+var donutChart = new Chart(donutChartCanvas, {
+    type: 'doughnut',
+    data: {
+        labels: [], // Initially empty
+        datasets: [{
+            data: [], // Initially empty
+            backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        responsive: true,
+    }
+});
+fetchMachineDataAndPlot();
+// Fetch machine data and plot it on the chart
+setInterval(() => {
+fetchMachineDataAndPlot();
+}, 5000);
+
+function fetchMachineSensorData(machine_id) {
+    $.ajax({
+        url: `webhook/get_machine_data/${machine_id}/`,
+        method: 'GET',
+        success: function(response) {
+            const tableBody = $(`#machineDataTable_${machine_id} tbody`);
+            tableBody.empty();
+
+            // Iterate through all properties in the response
+            for (const [key, value] of Object.entries(response)) {
+                if (key !== 'machine_id') {  // Skip machine_id as it's already in the header
+                    let formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    let formattedValue = formatValue(value);
+                    tableBody.append(`
+                        <tr>
+                            <td>${formattedKey}</td>
+                            <td>${formattedValue}</td>
+                        </tr>
+                    `);
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching machine data:', error);
+        }
+    });
+}
+
+function formatValue(value) {
+    if (typeof value === 'number') {
+        return value.toFixed(2);  // Display numbers with 2 decimal places
+    } else if (typeof value === 'boolean') {
+        return value ? 'Yes' : 'No';
+    } else if (typeof value === 'object' && value !== null) {
+        return JSON.stringify(value);  // For nested objects or arrays
+    }
+    return value;  // Return as is for strings and other types
+}
+
+$(document).ready(function() {
+    {% for machine in machines %}
+    setInterval(() => {
+    fetchMachineSensorData('{{machine.machine_id}}');
+    }, 5000);
+    
+    {% endfor %}
+});
+
 {%for machine in machines%}
 
 
@@ -123,10 +294,10 @@ var temperatureCanvas_{{ machine.machine_id }} = $('#temperature_{{ machine.mach
 
 // Define chart data
 var temperatureData_{{ machine.machine_id }} = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
     datasets: [
         {
-            label: 'Temperature 1',
+            label: 'Temperature',
             backgroundColor: 'rgba(60,141,188,0.9)',
             borderColor: 'rgba(60,141,188,0.8)',
             pointRadius: false,
@@ -134,19 +305,16 @@ var temperatureData_{{ machine.machine_id }} = {
             pointStrokeColor: 'rgba(60,141,188,1)',
             pointHighlightFill: '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data: [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-            label: 'Temperature 2',
-            backgroundColor: 'rgba(210, 214, 222, 1)',
-            borderColor: 'rgba(210, 214, 222, 1)',
-            pointRadius: false,
-            pointColor: 'rgba(210, 214, 222, 1)',
-            pointStrokeColor: '#c1c7d1',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
+            data: [
+    {% for data_point in machine.latest_20_data %}
+        {% if data_point.data.temperature is not None %}
+            {{ data_point.data.temperature }},
+        {% else %}
+            {{ data_point.data.weld_temperature }},
+        {% endif %}
+    {% endfor %}
+]
+        }
     ]
 }
 
@@ -187,65 +355,115 @@ new Chart(temperatureCanvas_{{ machine.machine_id }}, {
 // Get canvas context
 var energiCanvas_{{ machine.machine_id }} = $('#energi_{{ machine.machine_id }}').get(0).getContext('2d')
 
-// Define chart data
-var energiData_{{ machine.machine_id }} = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'Temperature 1',
-            backgroundColor: 'rgba(60,141,188,0.9)',
-            borderColor: 'rgba(60,141,188,0.8)',
-            pointRadius: false,
-            pointColor: '#3b8bba',
-            pointStrokeColor: 'rgba(60,141,188,1)',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data: [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-            label: 'Temperature 2',
-            backgroundColor: 'rgba(210, 214, 222, 1)',
-            borderColor: 'rgba(210, 214, 222, 1)',
-            pointRadius: false,
-            pointColor: 'rgba(210, 214, 222, 1)',
-            pointStrokeColor: '#c1c7d1',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-    ]
-}
-
-// Chart options
-var energichartOptions_{{ machine.machine_id }} = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-        display: true
-    },
-    scales: {
-        xAxes: [{
-            gridLines: {
-                display: false,
+{% if machine.machine_type == 'LEAK_TEST' %}
+    // Define chart data for LEAK_TEST machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Leak Rate',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.leak_rate }},
+                    {% endfor %}
+                ]
             }
-        }],
-        yAxes: [{
-            gridLines: {
-                display: false,
-            }
-        }]
-    }
-}
+        ]
+    };
 
-// Create new chart
+{% elif machine.machine_type == 'AGV' %}
+    // Define chart data for AGV machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Battery Level',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.battery_level }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+    
+{% elif machine.machine_type == 'PAINTING' %}
+    // Define chart data for AGV machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Paint Thickness',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.paint_thickness }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+{% else %}
+    // Define chart data for other machine types
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Power Consumption',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.power_consumption }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+{% endif %}
+
+// Now, initialize the chart with the correct data
 new Chart(energiCanvas_{{ machine.machine_id }}, {
-    type: 'line',
+    type: 'line', // Choose the type of chart you want (e.g., line, bar)
     data: energiData_{{ machine.machine_id }},
-    options: energichartOptions_{{ machine.machine_id }}
-})
-
-
-
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            xAxes: [{
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 20
+                }
+            }]
+        }
+    }
+});
 
 
 {%endfor%}
@@ -254,6 +472,7 @@ new Chart(energiCanvas_{{ machine.machine_id }}, {
 
 <!-- Chart.js -->
 <script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'scripts/autoupdate.js' %}"></script>
 
 
 

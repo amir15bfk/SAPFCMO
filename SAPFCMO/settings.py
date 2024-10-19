@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--2^o4t4#^77lsxbn(-lz_$pp)01z6awr0kfs6kvs^@of^fwl=j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["90d2-41-105-223-87.ngrok-free.app",'127.0.0.1']
+ALLOWED_HOSTS = ["6300-105-103-163-68.ngrok-free.app",'127.0.0.1']
 
 
 # Application definition
@@ -41,12 +41,17 @@ INSTALLED_APPS = [
     'webhook_handler',
     'websiteview',
 ]
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         }
+#     }
+# }
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        }
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
     }
 }
 MIDDLEWARE = [

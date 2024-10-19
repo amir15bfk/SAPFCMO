@@ -26,7 +26,7 @@ class Command(BaseCommand):
         parser.add_argument('--all', action='store_true', help='Subscribe all machines')
 
     def handle(self, *args, **options):
-        base_url = "https://90d2-41-105-223-87.ngrok-free.app"  # Your base URL
+        base_url = "https://6300-105-103-163-68.ngrok-free.app"  # Your base URL
         webhook_url = "https://manufcaturing-challenge-production.up.railway.app/Webhook"
 
         if options['all']:

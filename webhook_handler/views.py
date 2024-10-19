@@ -81,26 +81,16 @@ import requests
 def receive_machine_data(request, machine_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
+
         # Retrieve the Machine instance
         machine = get_object_or_404(Machine, machine_id=machine_id)
 
         timestamp = parse_datetime(data.get('timestamp'))
 
         # Prepare sensor data
-        sensor_data = {
-            'weld_temperature': data.get('weld_temperature'),
-            'weld_current': data.get('weld_current'),
-            'weld_voltage': data.get('weld_voltage'),
-            'weld_time': data.get('weld_time'),
-            'pressure_applied': data.get('pressure_applied'),
-            'arm_position': data.get('arm_position', {}),
-            'wire_feed_rate': data.get('wire_feed_rate'),
-            'gas_flow_rate': data.get('gas_flow_rate'),
-            'weld_strength_estimate': data.get('weld_strength_estimate'),
-            'vibration_level': data.get('vibration_level'),
-            'power_consumption': data.get('power_consumption')
-        }
+        
+        sensor_data = {key: data.get(key) for key in data.keys() if key != 'timestamp'}
+
 
         # Save to SensorData
         SensorData.objects.create(
@@ -136,3 +126,51 @@ class SendMachineDataView(View):
         response = requests.post(url, json=payload)
 
         return JsonResponse(response.json(), safe=False)
+
+
+def  chart_data(request, machine_id):
+    machine = get_object_or_404(Machine, machine_id=machine_id)
+    latest_data = LatestSensorData.objects.filter(machine=machine).first()
+    if latest_data:
+        return JsonResponse(latest_data.data, safe=False)
+    else:
+        return JsonResponse({}, safe=False)
+
+
+
+def chart_data(request):
+    machine = [{"machine_id": machine.machine_id, "power_consumption": machine.latest_data.data.get('power_consumption')} 
+               for machine in Machine.objects.all() if machine.latest_data.data.get('power_consumption')]
+    return JsonResponse(machine, safe=False)
+
+def get_machine_data(request, machine_id):
+    machine = Machine.objects.filter(machine_id=machine_id).first()
+    if machine and machine.sensor_data.exists():
+        latest_data = machine.sensor_data.order_by('-timestamp').first().data
+        return JsonResponse(latest_data, safe=False)
+    else:
+        return JsonResponse({}, safe=False)
+
+def get_machine_data20E(request, machine_id):
+    machine = Machine.objects.filter(machine_id=machine_id).first()
+    if machine and machine.sensor_data.exists():
+        latest_data = machine.sensor_data.order_by('-timestamp')[:20]
+        dic = {"label": "", "data": []}
+
+        # Check what data type the machine provides
+        if latest_data.first().data.get('power_consumption'):
+            dic["label"] = "Power Consumption"
+            dic["data"] = [d.data.get('power_consumption') for d in latest_data]
+        elif latest_data.first().data.get('paint_thickness'):
+            dic["label"] = "Paint Thickness"
+            dic["data"] = [d.data.get('paint_thickness') for d in latest_data]
+        elif latest_data.first().data.get('leak_rate'):
+            dic["label"] = "Leak Rate"
+            dic["data"] = [d.data.get('leak_rate') for d in latest_data]
+        elif latest_data.first().data.get('battery_level'):
+            dic["label"] = "Battery Level"
+            dic["data"] = [d.data.get('battery_level') for d in latest_data]
+        
+        return JsonResponse(dic, safe=False)
+    else:
+        return JsonResponse({}, safe=False)
