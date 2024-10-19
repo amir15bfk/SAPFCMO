@@ -59,28 +59,10 @@ Home
                             <i class="fas fa-exclamation-triangle"></i> Alerts
                         </h3>
                     </div>
-                    <div class="card-body">
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                            Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire soul.
-                        </div>
-                        <div class="alert alert-info alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-info"></i> Alert!</h5>
-                            Info alert preview. This alert is dismissable.
-                        </div>
-                        <div class="alert alert-warning alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
-                            Warning alert preview. This alert is dismissable.
-                        </div>
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-check"></i> Alert!</h5>
-                            Success alert preview. This alert is dismissable.
-                        </div>
+                    <div class="card-body" id="alert-container"> <!-- Added ID for targeting in JS -->
+                        <!-- Existing static alerts here -->
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -104,6 +86,7 @@ Home
                         </div>
                         
                         <div class="card-body">
+                            <div class="row">
                             <div class="col-6">
                             <table id="machineDataTable_{{machine.machine_id}}" class="table table-bordered table-striped">
                                 <thead>
@@ -116,6 +99,45 @@ Home
                                     <!-- Data will be populated here dynamically -->
                                 </tbody>
                             </table></div>
+                            <div class="col-md-4">
+
+                                <div class="card card-widget widget-user-2 shadow-sm">
+                                
+                                <div class="widget-user-header bg-warning">
+                                <div class="widget-user-image">
+                                </div>
+                                
+                                <h3 class="widget-user-username">{{machine.machine_name}}</h3>
+                                <h5 class="widget-user-desc">{{machine.machine_type}}</h5>
+                                </div>
+                                <div class="card-footer p-0">
+                                <ul class="nav flex-column">
+                                <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                Projects <span class="float-right badge bg-primary">31</span>
+                                </a>
+                                </li>
+                                <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                Tasks <span class="float-right badge bg-info">5</span>
+                                </a>
+                                </li>
+                                <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                Completed Projects <span class="float-right badge bg-success">12</span>
+                                </a>
+                                </li>
+                                <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                Followers <span class="float-right badge bg-danger">842</span>
+                                </a>
+                                </li>
+                                </ul>
+                                </div>
+                                </div>
+                                
+                                </div>
+                            </div>
                             <div class="row">
                             
                             <!--temperatur-->

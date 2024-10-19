@@ -76,6 +76,12 @@ from django.shortcuts import get_object_or_404
 from .models import Machine, SensorData, LatestSensorData
 import json
 import requests
+from webhook_handler import process_sensor_data
+from webhook_handler.anomaly_detection import *
+from webhook_handler.anomalyutils import *
+from webhook_handler.consumers import *
+from asgiref.sync import async_to_sync
+
 
 @csrf_exempt
 def receive_machine_data(request, machine_id):
@@ -107,6 +113,20 @@ def receive_machine_data(request, machine_id):
                 'data': sensor_data
             }
         )
+        flattened_data = process_new_data_point(sensor_data,machine)
+        output = detect_anomaly_for_point(flattened_data, machine.machine_type)
+        if output["is_general_anomaly"]:
+            # Send an email alert
+            # send_anomaly_alert(machine, output)
+
+            # # Create a task
+            # create_task(machine, output)
+
+            # Notify via WebSockets
+            message = f"Anomaly detected in {machine.name}. Details: {output}"
+            async_to_sync(notify_all_clients_anomaly)(message)
+
+            print('Anomaly detected!')
 
         return JsonResponse({'status': 'success'})
 
