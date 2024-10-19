@@ -81,7 +81,6 @@ def product_detail(request, machines_id):
         'sensor_data':sensor_data,
         'datas':data
     }
-    pass
     return render(request, 'machine.html',context)
 
 

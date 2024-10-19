@@ -116,6 +116,13 @@ Home
 
 {% block script %}
 <script>
+
+
+
+
+
+
+
 {%for machine in machines%}
 
 
@@ -124,10 +131,10 @@ var temperatureCanvas_{{ machine.machine_id }} = $('#temperature_{{ machine.mach
 
 // Define chart data
 var temperatureData_{{ machine.machine_id }} = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
     datasets: [
         {
-            label: 'Temperature 1',
+            label: 'Temperature',
             backgroundColor: 'rgba(60,141,188,0.9)',
             borderColor: 'rgba(60,141,188,0.8)',
             pointRadius: false,
@@ -135,19 +142,16 @@ var temperatureData_{{ machine.machine_id }} = {
             pointStrokeColor: 'rgba(60,141,188,1)',
             pointHighlightFill: '#fff',
             pointHighlightStroke: 'rgba(60,141,188,1)',
-            data: [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-            label: 'Temperature 2',
-            backgroundColor: 'rgba(210, 214, 222, 1)',
-            borderColor: 'rgba(210, 214, 222, 1)',
-            pointRadius: false,
-            pointColor: 'rgba(210, 214, 222, 1)',
-            pointStrokeColor: '#c1c7d1',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
+            data: [
+    {% for data_point in machine.latest_20_data %}
+        {% if data_point.data.temperature is not None %}
+            {{ data_point.data.temperature }},
+        {% else %}
+            {{ data_point.data.weld_temperature }},
+        {% endif %}
+    {% endfor %}
+]
+        }
     ]
 }
 
@@ -188,62 +192,142 @@ new Chart(temperatureCanvas_{{ machine.machine_id }}, {
 // Get canvas context
 var energiCanvas_{{ machine.machine_id }} = $('#energi_{{ machine.machine_id }}').get(0).getContext('2d')
 
-// Define chart data
-var energiData_{{ machine.machine_id }} = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'Temperature 1',
-            backgroundColor: 'rgba(60,141,188,0.9)',
-            borderColor: 'rgba(60,141,188,0.8)',
-            pointRadius: false,
-            pointColor: '#3b8bba',
-            pointStrokeColor: 'rgba(60,141,188,1)',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data: [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-            label: 'Temperature 2',
-            backgroundColor: 'rgba(210, 214, 222, 1)',
-            borderColor: 'rgba(210, 214, 222, 1)',
-            pointRadius: false,
-            pointColor: 'rgba(210, 214, 222, 1)',
-            pointStrokeColor: '#c1c7d1',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-    ]
-}
-
-// Chart options
-var energichartOptions_{{ machine.machine_id }} = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-        display: true
-    },
-    scales: {
-        xAxes: [{
-            gridLines: {
-                display: false,
+{% if machine.machine_type == 'LEAK_TEST' %}
+    // Define chart data for LEAK_TEST machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Leak Rate',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.leak_rate }},
+                    {% endfor %}
+                ]
             }
-        }],
-        yAxes: [{
-            gridLines: {
-                display: false,
-            }
-        }]
-    }
-}
+        ]
+    };
 
-// Create new chart
+{% elif machine.machine_type == 'AGV' %}
+    // Define chart data for AGV machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Battery Level',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.battery_level }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+    
+{% elif machine.machine_type == 'PAINTING' %}
+    // Define chart data for AGV machine type
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Paint Thickness',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.paint_thickness }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+{% else %}
+    // Define chart data for other machine types
+    var energiData_{{ machine.machine_id }} = {
+        labels: Array.from({length: 20}, (_, i) => i * -20).reverse(),
+        datasets: [
+            {
+                label: 'Power Consumption',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [
+                    {% for data_point in machine.latest_20_data %}
+                        {{ data_point.data.power_consumption }},
+                    {% endfor %}
+                ]
+            }
+        ]
+    };
+{% endif %}
+
+// Now, initialize the chart with the correct data
 new Chart(energiCanvas_{{ machine.machine_id }}, {
-    type: 'line',
+    type: 'line', // Choose the type of chart you want (e.g., line, bar)
     data: energiData_{{ machine.machine_id }},
-    options: energichartOptions_{{ machine.machine_id }}
-})
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            xAxes: [{
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 20
+                }
+            }]
+        }
+    }
+});
+// // Chart options
+// var energichartOptions_{{ machine.machine_id }} = {
+//     maintainAspectRatio: false,
+//     responsive: true,
+//     legend: {
+//         display: true
+//     },
+//     scales: {
+//         xAxes: [{
+//             gridLines: {
+//                 display: false,
+//             }
+//         }],
+//         yAxes: [{
+//             gridLines: {
+//                 display: false,
+//             }
+//         }]
+//     }
+// }
+
+// // Create new chart
+// new Chart(energiCanvas_{{ machine.machine_id }}, {
+//     type: 'line',
+//     data: energiData_{{ machine.machine_id }},
+//     options: energichartOptions_{{ machine.machine_id }}
+// })
 
 
 
@@ -255,6 +339,7 @@ new Chart(energiCanvas_{{ machine.machine_id }}, {
 
 <!-- Chart.js -->
 <script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'scripts/autoupdate.js' %}"></script>
 
 {% endblock script %}
 

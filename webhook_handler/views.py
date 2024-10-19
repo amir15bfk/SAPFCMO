@@ -81,26 +81,16 @@ import requests
 def receive_machine_data(request, machine_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
+
         # Retrieve the Machine instance
         machine = get_object_or_404(Machine, machine_id=machine_id)
 
         timestamp = parse_datetime(data.get('timestamp'))
 
         # Prepare sensor data
-        sensor_data = {
-            'weld_temperature': data.get('weld_temperature'),
-            'weld_current': data.get('weld_current'),
-            'weld_voltage': data.get('weld_voltage'),
-            'weld_time': data.get('weld_time'),
-            'pressure_applied': data.get('pressure_applied'),
-            'arm_position': data.get('arm_position', {}),
-            'wire_feed_rate': data.get('wire_feed_rate'),
-            'gas_flow_rate': data.get('gas_flow_rate'),
-            'weld_strength_estimate': data.get('weld_strength_estimate'),
-            'vibration_level': data.get('vibration_level'),
-            'power_consumption': data.get('power_consumption')
-        }
+        
+        sensor_data = {key: data.get(key) for key in data.keys() if key != 'timestamp'}
+
 
         # Save to SensorData
         SensorData.objects.create(
