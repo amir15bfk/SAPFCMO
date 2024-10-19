@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from webhook_handler.models import Machine,SensorData
+from webhook_handler.models import Machine,SensorData,MaintenanceProfile,Task
 
 from django.contrib.auth import logout
 from django.contrib.auth import login
@@ -12,6 +12,9 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+
+from .decoratr import group_required
+
 
 def loginpage(request):
     if request.method == "POST":
@@ -66,26 +69,28 @@ def product_detail(request, machines_id):
         data=sensor_data.first().data.keys()
     except:
         data={}
-    print(sensor_data.first().data)
 
 
 
 
     context = {
+        "machine_id": machine.machine_id,
         'user': request.user,
         'machines':machines,
         'user_groups':user_groups,
         'sensor_data':sensor_data,
         'datas':data
     }
-    pass
     return render(request, 'machine.html',context)
 
 @login_required
-def maitenancepage(request):
+@group_required('maitenance')
+def maitenance_page(request):
     machines=Machine.objects.all()
     user_groups = request.user.groups.values_list('name', flat=True)
-    print(user_groups)
+    user=MaintenanceProfile.objects.filter(user=request.user).first()
+    tasks=Task.objects.filter(taskdoneby=user)
+
 
 
 
@@ -94,9 +99,8 @@ def maitenancepage(request):
         'user': request.user,
         'machines':machines,
         'user_groups':user_groups,
+        'tasks':tasks,
     }
-    pass
-    return render(request, 'machine.html',context)
-    pass
+    return render(request, 'maintenance.html',context)
 
 
