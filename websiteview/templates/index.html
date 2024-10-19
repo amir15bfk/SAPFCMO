@@ -60,7 +60,7 @@ Home
                                 </div>
                                 <div class="card-body">
                                     <div class="chart">
-                                        <canvas id="{{ machine.machine_id }}temperature" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                        <canvas id="temperature_{{ machine.machine_id }}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                 </div>
                                 
@@ -83,7 +83,7 @@ Home
                                 </div>
                                 <div class="card-body">
                                     <div class="chart">
-                                        <canvas id="{{ machine.machine_id }}energi" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                        <canvas id="energi_{{ machine.machine_id }}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                 </div>
                                 
@@ -115,7 +115,146 @@ Home
 {% endblock style %}
 
 {% block script %}
-<!-- jQuery -->
+<script>
+{%for machine in machines%}
+
+
+// Get canvas context
+var temperatureCanvas_{{ machine.machine_id }} = $('#temperature_{{ machine.machine_id }}').get(0).getContext('2d')
+
+// Define chart data
+var temperatureData_{{ machine.machine_id }} = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        {
+            label: 'Temperature 1',
+            backgroundColor: 'rgba(60,141,188,0.9)',
+            borderColor: 'rgba(60,141,188,0.8)',
+            pointRadius: false,
+            pointColor: '#3b8bba',
+            pointStrokeColor: 'rgba(60,141,188,1)',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data: [28, 48, 40, 19, 86, 27, 90]
+        },
+        {
+            label: 'Temperature 2',
+            backgroundColor: 'rgba(210, 214, 222, 1)',
+            borderColor: 'rgba(210, 214, 222, 1)',
+            pointRadius: false,
+            pointColor: 'rgba(210, 214, 222, 1)',
+            pointStrokeColor: '#c1c7d1',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+    ]
+}
+
+// Chart options
+var temperaturechartOptions_{{ machine.machine_id }} = {
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: {
+        display: true
+    },
+    scales: {
+        xAxes: [{
+            gridLines: {
+                display: false,
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display: false,
+            }
+        }]
+    }
+}
+
+// Create new chart
+new Chart(temperatureCanvas_{{ machine.machine_id }}, {
+    type: 'line',
+    data: temperatureData_{{ machine.machine_id }},
+    options: temperaturechartOptions_{{ machine.machine_id }}
+})
+
+
+
+
+
+///////////////////////////////////////////////////////////////////
+
+// Get canvas context
+var energiCanvas_{{ machine.machine_id }} = $('#energi_{{ machine.machine_id }}').get(0).getContext('2d')
+
+// Define chart data
+var energiData_{{ machine.machine_id }} = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        {
+            label: 'Temperature 1',
+            backgroundColor: 'rgba(60,141,188,0.9)',
+            borderColor: 'rgba(60,141,188,0.8)',
+            pointRadius: false,
+            pointColor: '#3b8bba',
+            pointStrokeColor: 'rgba(60,141,188,1)',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data: [28, 48, 40, 19, 86, 27, 90]
+        },
+        {
+            label: 'Temperature 2',
+            backgroundColor: 'rgba(210, 214, 222, 1)',
+            borderColor: 'rgba(210, 214, 222, 1)',
+            pointRadius: false,
+            pointColor: 'rgba(210, 214, 222, 1)',
+            pointStrokeColor: '#c1c7d1',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+    ]
+}
+
+// Chart options
+var energichartOptions_{{ machine.machine_id }} = {
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: {
+        display: true
+    },
+    scales: {
+        xAxes: [{
+            gridLines: {
+                display: false,
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display: false,
+            }
+        }]
+    }
+}
+
+// Create new chart
+new Chart(energiCanvas_{{ machine.machine_id }}, {
+    type: 'line',
+    data: energiData_{{ machine.machine_id }},
+    options: energichartOptions_{{ machine.machine_id }}
+})
+
+
+
+
+
+{%endfor%}
+</script>
+
+
+<!-- Chart.js -->
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
 
 {% endblock script %}
 
