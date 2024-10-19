@@ -43,7 +43,6 @@ def loginpage(request):
 def index(request):
     machines=Machine.objects.all()
     user_groups = request.user.groups.values_list('name', flat=True)
-    print(user_groups)
 
 
 
@@ -126,14 +125,12 @@ def send_notification_email(request):
 
 
     result=send_mail(subject, message, from_email, recipient_list,fail_silently=False)
-    print(result)
     return HttpResponse(str(result))
 
 
 @login_required
 @require_http_methods(["POST"])
 def update_task(request):
-    print("im hearererr")
     random_profile = MaintenanceProfile.objects.order_by('?').first()
     try:
         task_id = request.POST.get('task_id')
@@ -188,21 +185,24 @@ def forecast_page(request):
         
         forecast_data[machine_type] = {}
         numerical_columns = df.select_dtypes(include=['number']).columns
-        print(numerical_columns)
         for column in numerical_columns:
-            print(machine_type)
             forecast, forecast_index = forecast_machine_data(machine_type, column)
             forecast_data[machine_type][column] = {
                 'forecast': forecast.tolist(),
-                'forecast_index': forecast_index.strftime('%Y-%m-%d %H:%M:%S').tolist()
+                'forecast_index': forecast_index.strftime('%m-%d %H').tolist()
             }
-
+    print(forecast_data)
     context = {
-        'forecast_data': json.dumps(forecast_data),
+        'forecast_data': forecast_data,
         'machines': machines,
         'user_groups':user_groups,
         'user': request.user
     }
     return render(request, 'forecast.html', context)
+
+
+
+
+
 
 

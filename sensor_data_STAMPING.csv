@@ -657,6 +657,7 @@ STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:53:55.38
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:53:55.764328+00:00,stamping_press_001,1150.8,9.3,0.5,0.5,547.0,4.5,aligned,4.1,16.7,52.0,0.6
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:54:37.192454+00:00,stamping_press_001,4395.5,4.7,87.2,0.77,1680.0,3.6,aligned,4.6,8.3,99.2,0.8
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:54:38.667155+00:00,stamping_press_001,2577.3,19.2,27.3,0.46,1741.0,3.2,aligned,1.1,13.6,68.4,0.8
+<<<<<<< HEAD
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:55:17.762695+00:00,stamping_press_001,1319.3,12.4,10.7,0.08,1872.0,2.0,aligned,4.6,14.3,50.4,1.0
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:55:18.053125+00:00,stamping_press_001,4346.1,14.5,40.5,0.28,1477.0,2.5,aligned,3.3,4.8,72.0,1.4
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 18:55:18.469986+00:00,stamping_press_001,579.9,3.3,42.4,0.21,1651.0,2.4,aligned,3.4,18.2,49.3,1.2
@@ -1315,3 +1316,5 @@ STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 23:00:09.66
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 23:00:31.279064+00:00,stamping_press_001,2898.9,3.6,47.3,0.14,810.0,4.5,aligned,4.5,14.7,83.9,0.1
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 23:00:31.962968+00:00,stamping_press_001,542.9,11.0,15.9,0.98,52.0,4.7,aligned,0.4,13.4,27.7,0.6
 STAMPING - stamping_press_001,STAMPING,stamping_press_001,2024-10-19 23:01:11.089542+00:00,stamping_press_001,3219.4,17.7,86.3,0.28,922.0,4.0,aligned,0.8,18.4,68.6,0.4
+=======
+>>>>>>> 2bb9516e2813390c714d962eb236d885c3ab8f57

@@ -743,6 +743,7 @@ LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:53:55.501756+00:
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:53:56.062283+00:00,leak_test_005,35.9,1.1,0.096,0.027,98.0,fail,water,good,1974.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:54:38.807969+00:00,leak_test_005,25.2,3.9,0.071,0.015,83.0,pass,hydraulic fluid,warning,771.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:54:38.946399+00:00,leak_test_005,36.7,4.0,0.086,0.036,52.0,fail,hydraulic fluid,good,1903.0
+<<<<<<< HEAD
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:55:19.752592+00:00,leak_test_005,33.4,6.0,0.081,0.049,105.0,pass,oil,good,1353.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:56:01.511743+00:00,leak_test_005,23.5,6.8,0.02,0.011,55.0,pass,air,fail,1921.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 18:56:02.221170+00:00,leak_test_005,27.2,9.0,0.025,0.04,15.0,pass,oil,warning,445.0
@@ -1399,3 +1400,5 @@ LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 23:00:27.036681+00:
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 23:00:45.586741+00:00,leak_test_005,37.9,3.4,0.029,0.031,62.0,fail,water,warning,492.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 23:01:06.149372+00:00,leak_test_005,5.9,0.4,0.03,0.022,31.0,fail,oil,good,1180.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 23:01:12.017081+00:00,leak_test_005,5.6,8.3,0.019,0.081,41.0,pass,oil,warning,766.0
+=======
+>>>>>>> 2bb9516e2813390c714d962eb236d885c3ab8f57
