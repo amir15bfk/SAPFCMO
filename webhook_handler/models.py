@@ -23,6 +23,7 @@
 #         return f'{self.machine_id} - {self.timestamp}'
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 class Machine(models.Model):
     MACHINE_TYPES = (
