@@ -104,3 +104,23 @@ def maitenance_page(request):
     return render(request, 'maintenance.html',context)
 
 
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+
+@login_required
+def send_notification_email(request):
+    
+    subject = 'Machine Issue Notification'
+    message = 'A new issue has been detected in Machine #3.'
+    from_email = 'chakib.aitsaada@gmail.com'
+    recipient_list = ['tchako12356@gmail.com']  # List of recipients
+
+
+    result=send_mail(subject, message, from_email, recipient_list,fail_silently=False)
+    print(result)
+    return HttpResponse(str(result))
+
+
+
