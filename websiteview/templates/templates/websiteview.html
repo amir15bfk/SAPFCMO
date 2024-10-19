@@ -151,7 +151,13 @@
             <p>Home</p>
             </a>
           </li>
-          {% if 'manager' in user_groups %}
+          {% if 'maitenance' in user_groups %}
+          <li class="nav-item">
+            <a href="{% url 'index' %}" class="nav-link">
+            <i class="fas fa-circle nav-icon"></i>
+            <p>maitenance</p>
+            </a>
+          </li>
           {%endif%}
           <li class="nav-item">
             <a href="" class="nav-link">

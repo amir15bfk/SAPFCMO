@@ -28,41 +28,33 @@ Home
                         </div>
 
                         <div class="card-body">
-                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dt-buttons btn-group flex-wrap">
-                                            <div class="btn-group">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
-                                            <thead>
-                                                <tr>
-                                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="timestamp: activate to sort column descending">timestamp</th>
-                                                    {% for key in datas %}
-                                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="{{ key }}: activate to sort column ascending">{{ key }}</th>
-                                                    {% endfor %}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for data in sensor_data %}
-                                                <tr class="even">
-                                                    <td class="dtr-control sorting_1" tabindex="0">{{ data.timestamp }}</td>
-                                                    {% for key, value in data.data.items %}
-                                                    <td class="dtr-control sorting_1" tabindex="0">{{ value }}</td>
-                                                    {% endfor %}
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>timestamp</th>
+                                        {% for key in datas %}
+                                        <th>{{ key }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in sensor_data %}
+                                        <tr class="even">
+                                            <td>{{ data.timestamp }}</td>
+                                            {% for key, value in data.data.items %}
+                                            <td>{{ value }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>timestamp</th>
+                                        {% for key in datas %}
+                                        <th>{{ key }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </tfoot>
                             </div>
                         </div>
                     </div>
@@ -94,19 +86,13 @@ Home
 
 <script>
     $(function () {
-      $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
+        $("#example1").DataTable({
+          "scrollX": true,
+          "lengthChange": false,
+          "autoWidth": false,
+          "buttons": ["copy", "csv", "excel", "pdf", "print", "colVis"]  // Add colVis for column visibility
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       });
-    });
+      
   </script>
 {% endblock script %}
