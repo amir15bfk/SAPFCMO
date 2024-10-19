@@ -97,14 +97,39 @@ class MaintenanceAgent(models.Model):
     
 
 class Task(models.Model):
+    AGENT_STATES = [
+        ('repaire', 'repaire'),
+        ('maintenance', 'Maintenance'),
+        ('change pies', 'changepies'),
+    ]
     # Fields for Task
     title = models.CharField(max_length=200)  # Task title or description
     description = models.TextField(blank=True, null=True)  # Detailed description of the task
     start_at = models.DateTimeField(auto_now_add=True)  # Automatically set the field to now when the object is created
     completed = models.BooleanField(default=False)  # Whether the task is completed or not
+    report=models.TextField(blank=True, null=True)
+    type=models.CharField(max_length=12, choices=AGENT_STATES, default='working')
+
 
     # Reference to the Machine model
     machine = models.ForeignKey('Machine', on_delete=models.CASCADE, related_name='tasks')  # Task related to a specific machine
+    taskdoneby=models.ForeignKey('MaintenanceProfile',on_delete=models.CASCADE,related_name="asigned")
+
+    def str(self):
+        return self.title
+    
+
+
+class MaintenanceProfile(models.Model):
+    AGENT_STATES = [
+        ('working', 'Working'),
+        ('free', 'Free'),
+        ('not_at_work', 'Not at Work'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    state = models.CharField(max_length=12, choices=AGENT_STATES, default='free')
+    assigned_tasks =  models.ForeignKey('Task',on_delete=models.CASCADE,related_name="doing",null=True,blank=True)
+
 
     def __str__(self):
-        return self.title
+        return f'{self.user.username} - Maintenance Profile'
