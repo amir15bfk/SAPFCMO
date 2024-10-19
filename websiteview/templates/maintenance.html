@@ -1,7 +1,7 @@
 {% extends 'templates/websiteview.html' %}
 {% load static %}
 {% block title %}
-machine: {{machine_id}}
+maintenance
 {% endblock title %}
 {% block user_name %}
 {{ user.username }}
@@ -12,7 +12,7 @@ machine: {{machine_id}}
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>machine: {{machine_id}}</h1>
+                    <h1>maintenance</h1>
                 </div>
             </div>
         </div>
@@ -31,28 +31,40 @@ machine: {{machine_id}}
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>timestamp</th>
-                                        {% for key in datas %}
-                                        <th>{{ key }}</th>
-                                        {% endfor %}
+                                        <th>title</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                        <th>start at</th>
+                                        <th>completed at</th>
+                                        <th>reports</th>
+                                        <th>machine</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for data in sensor_data %}
+                                    {% for task in tasks %}
                                         <tr class="even">
-                                            <td>{{ data.timestamp }}</td>
-                                            {% for key, value in data.data.items %}
-                                            <td>{{ value }}</td>
-                                            {% endfor %}
+                                            <td>{{ task.title }}</td>
+                                            <td>{{ task.type }}</td>
+                                            <td>{{ task.description }}</td>
+                                            <td>{{ task.start_at }}</td>
+                                            <td>{{ task.completed }}</td>
+                                            <td>{{ task.report }}</td>
+                                            <td>{{ task.machine.machine_id }}</td>
+
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>timestamp</th>
-                                        {% for key in datas %}
-                                        <th>{{ key }}</th>
-                                        {% endfor %}
+                                        <th>title</th>
+                                        <th>type</th>
+                                        <th>description</th>
+                                        <th>start at</th>
+                                        <th>completed at</th>
+                                        <th>reports</th>
+                                        <th>machine</th>
+                                        
+                                        
                                     </tr>
                                 </tfoot>
                             </div>
@@ -92,6 +104,7 @@ machine: {{machine_id}}
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colVis"]  // Add colVis for column visibility
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       });
+      
       
   </script>
 {% endblock script %}

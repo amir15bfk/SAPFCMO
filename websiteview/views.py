@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from webhook_handler.models import Machine,SensorData
+from webhook_handler.models import Machine,SensorData,MaintenanceProfile,Task
 
 from django.contrib.auth import logout
 from django.contrib.auth import login
@@ -13,15 +13,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
+from .decoratr import group_required
+
+
 def loginpage(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(username)
-        print(password)
         
         user = authenticate(request, username=username, password=password)  # Authenticate the user
-        print(user)
         if user is not None:
             login(request, user)  # Log the user in
             return redirect('index')  # Redirect to the index page
@@ -61,7 +61,6 @@ def logoutpage(request):
 def product_detail(request, machines_id):
     machines=Machine.objects.all()
     user_groups = request.user.groups.values_list('name', flat=True)
-    print(user_groups)
 
 
     machine = Machine.objects.get(machine_id=machines_id)
@@ -75,13 +74,33 @@ def product_detail(request, machines_id):
 
 
     context = {
+        "machine_id": machine.machine_id,
         'user': request.user,
         'machines':machines,
         'user_groups':user_groups,
         'sensor_data':sensor_data,
         'datas':data
     }
-    pass
     return render(request, 'machine.html',context)
+
+@login_required
+@group_required('maitenance')
+def maitenance_page(request):
+    machines=Machine.objects.all()
+    user_groups = request.user.groups.values_list('name', flat=True)
+    user=MaintenanceProfile.objects.filter(user=request.user).first()
+    tasks=Task.objects.filter(taskdoneby=user)
+
+
+
+
+
+    context = {
+        'user': request.user,
+        'machines':machines,
+        'user_groups':user_groups,
+        'tasks':tasks,
+    }
+    return render(request, 'maintenance.html',context)
 
 
