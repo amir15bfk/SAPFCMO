@@ -138,7 +138,7 @@ maintenance
             const reportText = row.find('.report-cell').text();
 
             // Update UI
-            row.find('td:eq(5)').text('Completed');
+            row.find('td:eq(5)').text('True');
             // Hide the action buttons
             $(this).closest('.action-buttons').empty();
 
@@ -159,7 +159,7 @@ maintenance
                 error: function(xhr, status, error) {
                     // Show error message and revert changes
                     alert('Error updating task: ' + error);
-                    row.find('td:eq(5)').text('Not Completed');
+                    row.find('td:eq(5)').text('False');
                     // Restore the buttons on error
                     row.find('.action-buttons').html(`
                         <button class="btn btn-success btn-sm complete-btn">Completed</button>
@@ -169,15 +169,13 @@ maintenance
             });
         });
 
-
-
         $('.not-complete-btn').on('click', function() {
             const row = $(this).closest('tr');
             const taskId = row.find('td:first').text();
             const reportText = row.find('.report-cell').text();
 
             // Update UI
-            row.find('td:eq(5)').text('Completed');
+            row.find('td:eq(5)').text('True');
             // Hide the action buttons
             $(this).closest('.action-buttons').empty();
 
@@ -198,7 +196,7 @@ maintenance
                 error: function(xhr, status, error) {
                     // Show error message and revert changes
                     alert('Error updating task: ' + error);
-                    row.find('td:eq(5)').text('Not Completed');
+                    row.find('td:eq(5)').text('False');
                     // Restore the buttons on error
                     row.find('.action-buttons').html(`
                         <button class="btn btn-success btn-sm complete-btn">Completed</button>
@@ -208,7 +206,6 @@ maintenance
             });
         });
 
-        // Handle Not Complete button click
     });
 </script>
 {% endblock script %}

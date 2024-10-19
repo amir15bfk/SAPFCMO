@@ -152,15 +152,16 @@ def update_task(request):
         task.save()
 
         if not completed:
-            newtask=Task.objects.create(
+            new_task = Task(
             title=task.title,
-            type=task.type,
             description=task.description+" "+task.report,
-            machine=task.machine,
-            start_at=timezone.now(),
             completed=False,
+            report="",
+            type=task.type,
+            machine=task.machine,
             taskdoneby=random_profile
             )
+            new_task.save()
         return JsonResponse({'status': 'success'})
     except Task.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Task not found'}, status=404)
