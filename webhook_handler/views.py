@@ -115,7 +115,7 @@ def receive_machine_data(request, machine_id):
         )
         flattened_data = process_new_data_point(sensor_data,machine)
         output = detect_anomaly_for_point(flattened_data, machine.machine_type)
-        if output["is_general_anomaly"]:
+        if output["is_general_anomaly"]!=100:
             # Send an email alert
             # send_anomaly_alert(machine, output)
 
