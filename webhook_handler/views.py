@@ -155,29 +155,22 @@ def get_machine_data20E(request, machine_id):
     machine = Machine.objects.filter(machine_id=machine_id).first()
     if machine and machine.sensor_data.exists():
         latest_data = machine.sensor_data.order_by('-timestamp')[:20]
-        dic = dict{}
+        dic = {"label": "", "data": []}
+
+        # Check what data type the machine provides
         if latest_data.first().data.get('power_consumption'):
-            dic["label"] = "power_consumption"
-            dic["data"] = []
-            for d in latest_data:
-                dic["data"].append(d.data.get('power_consumption'))
+            dic["label"] = "Power Consumption"
+            dic["data"] = [d.data.get('power_consumption') for d in latest_data]
         elif latest_data.first().data.get('paint_thickness'):
-            dic["label"] = "paint_thickness"
-            dic["data"] = []
-            for d in latest_data:
-                dic["data"].append(d.data.get('paint_thickness'))
+            dic["label"] = "Paint Thickness"
+            dic["data"] = [d.data.get('paint_thickness') for d in latest_data]
         elif latest_data.first().data.get('leak_rate'):
-            dic["label"] = "leak_rate"
-            dic["data"] = []
-            for d in latest_data:
-                dic["data"].append(d.data.get('leak_rate'))
+            dic["label"] = "Leak Rate"
+            dic["data"] = [d.data.get('leak_rate') for d in latest_data]
         elif latest_data.first().data.get('battery_level'):
-            dic["label"] = "battery_level"
-            dic["data"] = []
-            for d in latest_data:
-                dic["data"].append(d.data.get('battery_level'))
-   
+            dic["label"] = "Battery Level"
+            dic["data"] = [d.data.get('battery_level') for d in latest_data]
+        
         return JsonResponse(dic, safe=False)
     else:
         return JsonResponse({}, safe=False)
-
