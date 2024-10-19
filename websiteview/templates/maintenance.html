@@ -1,11 +1,5 @@
 {% extends 'templates/websiteview.html' %}
-{% load static %}
-{% block title %}
-maintenance
-{% endblock title %}
-{% block user_name %}
-{{ user.username }}
-{% endblock user_name %}
+{# ... previous blocks remain the same ... #}
 
 {% block content %}
     <section class="content-header">
@@ -31,6 +25,7 @@ maintenance
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>id</th>
                                         <th>title</th>
                                         <th>type</th>
                                         <th>description</th>
@@ -38,24 +33,32 @@ maintenance
                                         <th>completed at</th>
                                         <th>reports</th>
                                         <th>machine</th>
+                                        <th>actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for task in tasks %}
                                         <tr class="even">
+                                            <td>{{ task.id }}</td>
                                             <td>{{ task.title }}</td>
                                             <td>{{ task.type }}</td>
                                             <td>{{ task.description }}</td>
                                             <td>{{ task.start_at }}</td>
                                             <td>{{ task.completed }}</td>
-                                            <td>{{ task.report }}</td>
+                                            <td contenteditable="true" class="report-cell">{{ task.report }}</td>
                                             <td>{{ task.machine.machine_id }}</td>
-
+                                            <td class="action-buttons">
+                                                {% if not task.completed %}
+                                                    <button class="btn btn-success btn-sm complete-btn">Completed</button>
+                                                    <button class="btn btn-danger btn-sm not-complete-btn">Not Completed</button>
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>id</th>
                                         <th>title</th>
                                         <th>type</th>
                                         <th>description</th>
@@ -63,11 +66,10 @@ maintenance
                                         <th>completed at</th>
                                         <th>reports</th>
                                         <th>machine</th>
-                                        
-                                        
+                                        <th>actions</th>
                                     </tr>
                                 </tfoot>
-                            </div>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -77,35 +79,99 @@ maintenance
 {% endblock content %}
 
 {% block script %}
-
-<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
-<script src="{% static 'plugins/jszip/jszip.min.js' %}"></script>
-<script src="{% static 'plugins/pdfmake/pdfmake.min.js' %}"></script>
-<script src="{% static 'plugins/pdfmake/vfs_fonts.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
-
-<script src="{% static 'dist/js/adminlte.min.js?v=3.2.0' %}"></script>
-
-
+<!-- Previous script imports remain the same -->
 <script>
     $(function () {
-        $("#example1").DataTable({
-          "scrollX": true,
-          "lengthChange": false,
-          "buttons": ["copy", "csv", "excel", "pdf", "print", "colVis"]  // Add colVis for column visibility
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      });
-      
-      
-  </script>
-{% endblock script %}
+        // Get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
 
+        // Initialize DataTable
+        $("#example1").DataTable({
+            "scrollX": true,
+            "lengthChange": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colVis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+        // Handle Complete button click
+        $('.complete-btn').on('click', function() {
+            const row = $(this).closest('tr');
+            const taskId = row.find('td:first').text();
+            const reportText = row.find('.report-cell').text();
+
+            // Update UI
+            row.find('td:eq(5)').text('Completed');
+            // Hide the action buttons
+            $(this).closest('.action-buttons').empty();
+
+            // Send AJAX request
+            $.ajax({
+                url: '/update_task/',
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {
+                    task_id: taskId,
+                    completed: true,
+                    report: reportText
+                },
+                success: function(response) {
+                    // Show success message
+                    alert('Task marked as completed and report updated successfully!');
+                },
+                error: function(xhr, status, error) {
+                    // Show error message and revert changes
+                    alert('Error updating task: ' + error);
+                    row.find('td:eq(5)').text('Not Completed');
+                    // Restore the buttons on error
+                    row.find('.action-buttons').html(`
+                        <button class="btn btn-success btn-sm complete-btn">Completed</button>
+                        <button class="btn btn-danger btn-sm not-complete-btn">Not Completed</button>
+                    `);
+                }
+            });
+        });
+
+        // Handle Not Complete button click
+        $('.not-complete-btn').on('click', function() {
+            const row = $(this).closest('tr');
+            const taskId = row.find('td:first').text();
+            const reportText = row.find('.report-cell').text();
+
+            // Update UI
+            row.find('td:eq(5)').text('Not Completed');
+
+            // Send AJAX request
+            $.ajax({
+                url: '/update_task/',
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {
+                    task_id: taskId,
+                    completed: false,
+                    report: reportText
+                },
+                success: function(response) {
+                    alert('Task marked as not completed and report updated successfully!');
+                },
+                error: function(xhr, status, error) {
+                    alert('Error updating task: ' + error);
+                    row.find('td:eq(5)').text('Completed');
+                }
+            });
+        });
+    });
+</script>
+{% endblock script %}

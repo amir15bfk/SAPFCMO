@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
@@ -14,6 +15,8 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
 from .decoratr import group_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 
 
 def loginpage(request):
@@ -88,8 +91,12 @@ def product_detail(request, machines_id):
 def maitenance_page(request):
     machines=Machine.objects.all()
     user_groups = request.user.groups.values_list('name', flat=True)
-    user=MaintenanceProfile.objects.filter(user=request.user).first()
-    tasks=Task.objects.filter(taskdoneby=user)
+    if request.user.groups.filter(name="manager").exists():
+        tasks=Task.objects.all()
+    else:
+        
+        user=MaintenanceProfile.objects.filter(user=request.user).first()
+        tasks=Task.objects.filter(taskdoneby=user)
 
 
 
@@ -122,5 +129,42 @@ def send_notification_email(request):
     print(result)
     return HttpResponse(str(result))
 
+
+@login_required
+@require_http_methods(["POST"])
+def update_task(request):
+    print("im hearererr")
+    random_profile = MaintenanceProfile.objects.order_by('?').first()
+    try:
+        task_id = request.POST.get('task_id')
+        task = Task.objects.get(id=task_id)
+        
+        # Update completion status if provided
+        if 'completed' in request.POST:
+            completed = request.POST.get('completed') == 'true'
+        
+        # Update report if provided
+        if 'report' in request.POST:
+            task.report = request.POST.get('report')
+                                           
+        task.completed=True
+        
+        task.save()
+
+        if not completed:
+            newtask=Task.objects.create(
+            title=task.title,
+            type=task.type,
+            description=task.description+" "+task.report,
+            machine=task.machine,
+            start_at=timezone.now(),
+            completed=False,
+            taskdoneby=random_profile
+            )
+        return JsonResponse({'status': 'success'})
+    except Task.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Task not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
