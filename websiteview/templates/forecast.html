@@ -1,0 +1,25 @@
+{% extends 'templates/websiteview.html' %}
+{% load static %}
+{% block title %}
+forecast
+
+{% endblock title %}
+{% block user_name%}
+{{user.username}}
+{% endblock user_name%}
+
+{% block content %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Forecast</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% block content %}

@@ -169,3 +169,38 @@ def update_task(request):
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
+
+import json
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from webhook_handler.models import Machine
+from anomaly_forcasting import load_and_preprocess_data, forecast_machine_data
+
+@login_required
+def forecast_page(request):
+    machines = Machine.objects.all()
+    forecast_data = {}
+
+    for machine in machines:
+        machine_type = machine.machine_type
+        user_groups = request.user.groups.values_list('name', flat=True)
+        df = load_and_preprocess_data(machine_type)
+        
+        forecast_data[machine_type] = {}
+        
+        for column in df.columns:
+            forecast, forecast_index = forecast_machine_data(machine_type, column)
+            forecast_data[machine_type][column] = {
+                'forecast': forecast.tolist(),
+                'forecast_index': forecast_index.strftime('%Y-%m-%d %H:%M:%S').tolist()
+            }
+
+    context = {
+        'forecast_data': json.dumps(forecast_data),
+        'machines': machines,
+        'user_groups':user_groups,
+        'user': request.user
+    }
+    return render(request, 'forecast.html', context)
+
+

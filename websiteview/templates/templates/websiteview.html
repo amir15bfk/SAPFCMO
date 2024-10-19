@@ -140,6 +140,12 @@
             <p>Home</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{% url 'forecast_page' %}" class="nav-link">
+            <i class="fas fa-circle nav-icon"></i>
+            <p>forecast</p>
+            </a>
+          </li>
           {% if 'maitenance' in user_groups %}
           <li class="nav-item">
             <a href="{% url 'maitenance_page' %}" class="nav-link">
