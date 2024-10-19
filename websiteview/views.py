@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from webhook_handler.models import Machine
+from webhook_handler.models import Machine,SensorData
 
 from django.contrib.auth import logout
 from django.contrib.auth import login
@@ -55,5 +55,33 @@ def index(request):
 def logoutpage(request):
     logout(request)
     return redirect('login')
+
+
+@login_required
+def product_detail(request, machines_id):
+    machines=Machine.objects.all()
+    user_groups = request.user.groups.values_list('name', flat=True)
+    print(user_groups)
+
+
+    machine = Machine.objects.get(machine_id=machines_id)
+    sensor_data = SensorData.objects.filter(machine=machine).order_by('-timestamp')
+    try:
+        data=sensor_data.first().data.keys()
+    except:
+        data={}
+
+
+
+
+    context = {
+        'user': request.user,
+        'machines':machines,
+        'user_groups':user_groups,
+        'sensor_data':sensor_data,
+        'datas':data
+    }
+    pass
+    return render(request, 'machine.html',context)
 
 

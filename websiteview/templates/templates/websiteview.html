@@ -154,6 +154,30 @@
           {% if 'manager' in user_groups %}
           {%endif%}
           <li class="nav-item">
+            <a href="" class="nav-link">
+            <i class="nav-icon fas fa-circle"></i>
+            <p>
+            machine
+            <i class="right fas fa-angle-left"></i>
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
+              {%for machine in machines %}
+              <li class="nav-item">
+                <a href="{% url "product_detail" machine.machine_id %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{machine.machine_id}}</p>
+                </a>
+                </li>
+
+              {% endfor %}
+          
+            </ul>
+          </li>
+
+
+
+          <li class="nav-item">
             <a href="{% url 'logout' %}" class="nav-link">
             <i class="fas fa-circle nav-icon"></i>
             <p>logout</p>
