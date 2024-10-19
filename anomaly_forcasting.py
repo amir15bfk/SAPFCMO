@@ -65,8 +65,7 @@ def forecast_machine_data(machine_type, column, period=168):
     
     # Create a new index for the forecasted period
     last_timestamp = train.index[-1]
-    forecast_index = pd.date_range(start=last_timestamp, periods=period + 1, closed='right', freq='H')
-    
+    forecast_index = pd.date_range(start=last_timestamp, periods=period + 1, freq='H')[1:] 
     return forecast, forecast_index
 
 # Function to plot the forecasted data

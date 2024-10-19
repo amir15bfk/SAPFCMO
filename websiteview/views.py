@@ -187,8 +187,10 @@ def forecast_page(request):
         df = load_and_preprocess_data(machine_type)
         
         forecast_data[machine_type] = {}
-        
-        for column in df.columns:
+        numerical_columns = df.select_dtypes(include=['number']).columns
+        print(numerical_columns)
+        for column in numerical_columns:
+            print(machine_type)
             forecast, forecast_index = forecast_machine_data(machine_type, column)
             forecast_data[machine_type][column] = {
                 'forecast': forecast.tolist(),
