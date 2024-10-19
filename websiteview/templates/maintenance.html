@@ -1,6 +1,12 @@
 {% extends 'templates/websiteview.html' %}
 {# ... previous blocks remain the same ... #}
-
+{% load static %}
+{% block title %}
+maintenance
+{% endblock title %}
+{% block user_name %}
+{{ user.username }}
+{% endblock user_name %}
 {% block content %}
     <section class="content-header">
         <div class="container-fluid">
@@ -18,7 +24,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">DataTable with default features</h3>
+                            <h3 class="card-title">Tasks table</h3>
                         </div>
 
                         <div class="card-body">
@@ -80,6 +86,25 @@
 
 {% block script %}
 <!-- Previous script imports remain the same -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="{% static 'dist/js/adminlte.min.js?v=3.2.0' %}"></script>
+
+
+
 <script>
     $(function () {
         // Get CSRF token
@@ -103,7 +128,7 @@
         $("#example1").DataTable({
             "scrollX": true,
             "lengthChange": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colVis"]
+            "buttons": ["copy", "csv", "excel", "pdf", "print"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
         // Handle Complete button click
@@ -144,14 +169,17 @@
             });
         });
 
-        // Handle Not Complete button click
+
+
         $('.not-complete-btn').on('click', function() {
             const row = $(this).closest('tr');
             const taskId = row.find('td:first').text();
             const reportText = row.find('.report-cell').text();
 
             // Update UI
-            row.find('td:eq(5)').text('Not Completed');
+            row.find('td:eq(5)').text('Completed');
+            // Hide the action buttons
+            $(this).closest('.action-buttons').empty();
 
             // Send AJAX request
             $.ajax({
@@ -160,18 +188,27 @@
                 headers: {'X-CSRFToken': csrftoken},
                 data: {
                     task_id: taskId,
-                    completed: false,
+                    completed: true,
                     report: reportText
                 },
                 success: function(response) {
-                    alert('Task marked as not completed and report updated successfully!');
+                    // Show success message
+                    alert('Task marked as completed and report updated successfully!');
                 },
                 error: function(xhr, status, error) {
+                    // Show error message and revert changes
                     alert('Error updating task: ' + error);
-                    row.find('td:eq(5)').text('Completed');
+                    row.find('td:eq(5)').text('Not Completed');
+                    // Restore the buttons on error
+                    row.find('.action-buttons').html(`
+                        <button class="btn btn-success btn-sm complete-btn">Completed</button>
+                        <button class="btn btn-danger btn-sm not-complete-btn">Not Completed</button>
+                    `);
                 }
             });
         });
+
+        // Handle Not Complete button click
     });
 </script>
 {% endblock script %}
