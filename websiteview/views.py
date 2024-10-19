@@ -189,7 +189,7 @@ def forecast_page(request):
             forecast, forecast_index = forecast_machine_data(machine_type, column)
             forecast_data[machine_type][column] = {
                 'forecast': forecast.tolist(),
-                'forecast_index': forecast_index.strftime('%Y-%m-%d %H:%M:%S').tolist()
+                'forecast_index': forecast_index.strftime('%m-%d %H').tolist()
             }
     print(forecast_data)
     context = {

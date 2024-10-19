@@ -78,56 +78,62 @@
 
 
 {% for machine in machines %}
-{% for key in forecast_data.keys %}
+{% for key, values in forecast_data.items %}
 {% if key == machine.machine_type %}
 {% for column,value in values.items %}
 <script>
 
-    var areaChartOptions = {
-        maintainAspectRatio : false,
-        responsive : true,
-        legend: {
-          display: false
+
+
+
+
+
+    var areaChartCanvas = $('#chart_{{ machine.machine_type }}_{{ column }}').get(0).getContext('2d')
+
+    var areaChartData = {
+      labels  : {{value.forecast_index|safe}},
+      datasets: [
+        {
+          label               : 'Digital Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : {{value.forecast|safe}}
         },
-        scales: {
-          xAxes: [{
-            gridLines : {
-              display : false,
-            }
-          }],
-          yAxes: [{
-            gridLines : {
-              display : false,
-            }
-          }]
-        }
-      }
-      
+      ]
+    }
 
-    var chart_{{ machine.machine_type }}_{{ column }}Canvas = $('#chart_{{ machine.machine_type }}_{{ column }}').get(0).getContext('2d')
-    var chart_{{ machine.machine_type }}_{{ column }}Options = $.extend(true, {}, areaChartOptions)
-    var chart_{{ machine.machine_type }}_{{ column }}Data = {
-        labels  : {{ data.forecast_index|safe }},
-        datasets: [
-          {
-            label               : 'Digital Goods',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointRadius          : false,
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : {{ data.forecast|safe }},
-          },
-        ]
+    var areaChartOptions = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }],
+        yAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }]
       }
+    }
 
-    var chart_{{ machine.machine_type }}_{{ column }}Chart = new Chart(chart_{{ machine.machine_type }}_{{ column }}Canvas, {
+    // This will get the first returned node in the jQuery collection.
+    new Chart(areaChartCanvas, {
       type: 'line',
-      data: lineChartData,
-      options: lineChartOptions
+      data: areaChartData,
+      options: areaChartOptions
     })
+
   </script>
   {%endfor%}
 
