@@ -1034,3 +1034,42 @@ LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:49:09.589687+00:
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:49:12.283044+00:00,leak_test_005,16.3,9.2,0.07,0.007,0.0,fail,coolant,good,1527.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:49:53.859274+00:00,leak_test_005,8.3,9.5,0.085,0.051,67.0,fail,oil,fail,1367.0
 LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:49:56.486385+00:00,leak_test_005,36.1,9.3,0.03,0.021,34.0,fail,water,warning,1699.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:50:35.793872+00:00,leak_test_005,34.7,9.6,0.097,0.007,42.0,fail,hydraulic fluid,good,324.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:50:57.125752+00:00,leak_test_005,11.1,2.2,0.098,0.059,104.0,fail,coolant,good,1659.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:51:16.609341+00:00,leak_test_005,25.6,4.2,0.018,0.087,13.0,pass,hydraulic fluid,fail,1597.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:51:18.775329+00:00,leak_test_005,7.8,1.7,0.04,0.004,34.0,pass,coolant,good,947.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:51:59.823572+00:00,leak_test_005,13.8,2.7,0.0,0.035,89.0,fail,air,warning,967.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:52:00.486635+00:00,leak_test_005,16.1,9.1,0.089,0.016,92.0,fail,hydraulic fluid,fail,660.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:52:42.281088+00:00,leak_test_005,29.1,0.9,0.002,0.069,68.0,pass,coolant,good,1380.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:52:43.178056+00:00,leak_test_005,43.4,8.7,0.016,0.082,55.0,pass,oil,fail,1189.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:52:43.341600+00:00,leak_test_005,47.4,5.8,0.028,0.055,107.0,fail,water,good,1047.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:53:22.623895+00:00,leak_test_005,44.0,5.4,0.068,0.076,0.0,fail,oil,fail,953.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:53:24.342752+00:00,leak_test_005,24.2,1.5,0.056,0.089,110.0,pass,oil,fail,965.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:54:07.045198+00:00,leak_test_005,37.4,7.6,0.004,0.081,61.0,fail,water,fail,1793.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:54:07.216232+00:00,leak_test_005,39.7,2.1,0.015,0.087,85.0,fail,hydraulic fluid,good,406.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:54:49.282686+00:00,leak_test_005,46.1,5.4,0.09,0.089,46.0,fail,hydraulic fluid,good,87.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:54:49.748757+00:00,leak_test_005,43.6,2.4,0.046,0.023,6.0,fail,air,good,1238.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:55:28.342163+00:00,leak_test_005,13.2,4.5,0.025,0.007,107.0,fail,coolant,warning,1903.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:55:29.016442+00:00,leak_test_005,9.9,8.4,0.085,0.035,69.0,pass,oil,warning,703.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:56:12.003744+00:00,leak_test_005,4.3,5.4,0.026,0.091,77.0,fail,hydraulic fluid,fail,84.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:56:13.353748+00:00,leak_test_005,25.7,9.0,0.089,0.001,107.0,fail,water,warning,708.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:56:51.573707+00:00,leak_test_005,20.6,9.4,0.034,0.068,23.0,pass,coolant,good,1223.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:56:53.431190+00:00,leak_test_005,7.4,9.2,0.013,0.011,49.0,pass,coolant,fail,535.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:57:34.542014+00:00,leak_test_005,30.1,1.6,0.067,0.015,9.0,pass,coolant,good,304.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:57:56.617164+00:00,leak_test_005,17.7,6.1,0.019,0.057,12.0,fail,oil,warning,232.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:58:28.078167+00:00,leak_test_005,37.6,0.5,0.031,0.014,8.0,fail,hydraulic fluid,warning,445.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:58:58.820378+00:00,leak_test_005,11.6,2.5,0.093,0.066,1.0,fail,air,fail,141.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:58:59.687702+00:00,leak_test_005,27.0,7.8,0.069,0.053,72.0,fail,oil,fail,972.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:59:02.580557+00:00,leak_test_005,13.7,6.6,0.034,0.033,104.0,pass,water,warning,669.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:59:41.526645+00:00,leak_test_005,23.4,9.5,0.003,0.098,108.0,fail,hydraulic fluid,good,1370.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 20:59:41.879416+00:00,leak_test_005,15.0,3.4,0.094,0.025,110.0,fail,oil,fail,1780.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:00:25.722694+00:00,leak_test_005,22.0,0.3,0.03,0.082,5.0,fail,coolant,warning,833.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:00:25.963266+00:00,leak_test_005,14.4,5.8,0.1,0.056,14.0,pass,hydraulic fluid,warning,75.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:01:07.377340+00:00,leak_test_005,38.8,7.7,0.096,0.048,116.0,pass,hydraulic fluid,good,1418.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:01:14.140686+00:00,leak_test_005,19.1,3.0,0.054,0.084,74.0,fail,water,good,630.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:01:47.314218+00:00,leak_test_005,0.9,6.3,0.048,0.008,109.0,fail,air,good,1377.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:01:48.695630+00:00,leak_test_005,31.2,1.3,0.098,0.007,7.0,fail,water,fail,184.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:02:29.236836+00:00,leak_test_005,41.2,0.2,0.066,0.077,107.0,pass,hydraulic fluid,good,1020.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:02:30.454178+00:00,leak_test_005,10.8,9.7,0.06,0.088,119.0,pass,coolant,warning,1491.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:03:12.380695+00:00,leak_test_005,48.2,9.8,0.028,0.029,27.0,fail,hydraulic fluid,warning,741.0
+LEAK_TEST - leak_test_005,LEAK_TEST,leak_test_005,2024-10-19 21:03:12.839505+00:00,leak_test_005,17.0,4.9,0.086,0.036,19.0,pass,coolant,good,336.0
