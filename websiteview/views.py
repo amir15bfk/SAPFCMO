@@ -203,6 +203,7 @@ def forecast_page(request):
 
 
 
-
+def forcast2(request):
+    pass
 
 
